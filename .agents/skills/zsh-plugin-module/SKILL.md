@@ -16,7 +16,7 @@ Use this skill when adding a plugin to this repository's wrapper module tree.
   - `history/`
   - `integrations/`
   - `syntax-highlighting/`
-- Dendritic module discovery is used, so a new `.nix` file in this tree is normally enough for registration.
+- Dendritic module discovery is used, so a tracked new `.nix` file in this tree is normally enough for registration.
 - Core plugin option types are defined in `modules/+wrapper/modules/plugins.nix`.
 
 ## Plugin Shape
@@ -62,6 +62,6 @@ Examples in this repo:
 - fetched package with init: `completion/fzf-tab.nix`
 - flake input plus ordering: `syntax-highlighting/patina.nix`
 
-## Checks
+## Verification
 
-After adding a plugin, search for similar modules first and keep naming consistent. If behavior is user-visible, update or run the relevant checks under `modules/checks/`.
+After adding a plugin, search for similar modules first and keep naming consistent. Do not add checks for a simple plugin registration unless explicitly requested. For new files, run `git add <path>` before relying on flake evaluation or checks.

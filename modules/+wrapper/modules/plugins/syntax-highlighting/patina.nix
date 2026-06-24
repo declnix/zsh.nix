@@ -12,8 +12,6 @@
       in
       {
         config = lib.mkIf config.shell.highlighting.patina.enable {
-          zsh.syntaxHighlighting.enable = lib.mkDefault true;
-
           zsh.startPlugins.syntax-highlighting = {
             package = lib.mkForce package;
             source = lib.mkForce null;

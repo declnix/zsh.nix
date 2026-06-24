@@ -2,16 +2,11 @@
 {
   zsh.modules = [
     ({ lib, ... }: {
-      options.zsh.syntaxHighlighting.enable = lib.mkOption {
-        type = lib.types.bool;
-        default = false;
-        internal = true;
-        description = "Enable the zsh-syntax-highlighting implementation.";
-      };
+      options.shell.highlighting.enable = lib.mkEnableOption "zsh-syntax-highlighting";
     })
 
     ({ config, lib, pkgs, ... }: {
-      config = lib.mkIf config.zsh.syntaxHighlighting.enable {
+      config = lib.mkIf config.shell.highlighting.enable {
         zsh.startPlugins.syntax-highlighting = {
           package = pkgs.zsh-syntax-highlighting;
           source = "share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh";

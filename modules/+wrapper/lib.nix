@@ -31,7 +31,12 @@ let
           dag = inputs.dag.lib { inherit lib; };
         } // specialArgs;
       };
-      zshrc = pkgs.writeText "zshrc" evaluated.config.zsh.rc;
+      failedAssertions = builtins.filter (a: ! a.assertion) evaluated.config.assertions;
+      zshrc =
+        assert lib.assertMsg
+          (failedAssertions == [ ])
+          (lib.concatMapStringsSep "\n" (a: a.message) failedAssertions);
+        pkgs.writeText "zshrc" evaluated.config.zsh.rc;
     in
     pkgs.runCommand "zsh-config" { buildInputs = [ pkgs.makeWrapper ]; } ''
       mkdir -p $out/bin

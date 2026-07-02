@@ -5,7 +5,7 @@
     let
       zshrc = config.flake.lib.zshConfiguration {
         inherit pkgs;
-        modules = [{ initExtra = "export NIX_ZSH_SMOKE=42"; }];
+        modules = [{ initConfig = "export NIX_ZSH_SMOKE=42"; }];
       };
       attrsetApiZsh = config.flake.lib.zshConfiguration {
         inherit pkgs;

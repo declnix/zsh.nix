@@ -20,7 +20,7 @@
           })
           {
             zsh.perf-plugins.enable = true;
-            initExtra = ''
+            initConfig = ''
               autoload -Uz add-zsh-hook
               nix_zsh_first_prompt_ready() {
                 print -r -- "NIX_ZSH_READY $(date +%s%N)"

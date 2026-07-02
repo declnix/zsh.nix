@@ -29,7 +29,7 @@
               mvn.enable = true;
             };
 
-            initExtra = ''
+            initConfig = ''
               if [[ -n $SSH_CLIENT ]]; then
                 PROMPT="%F{cyan}[zsh.nix]%f %F{green}%n@%m%f %B%F{magenta}❯%f%b "
               else

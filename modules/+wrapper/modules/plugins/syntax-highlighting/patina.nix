@@ -8,7 +8,14 @@
 
     ({ config, inputs, lib, pkgs, ... }:
       let
-        package = inputs.zsh-patina.packages.${pkgs.stdenv.hostPlatform.system}.default;
+        src = inputs.zsh-patina;
+        manifest = (lib.importTOML (src + "/Cargo.toml")).package;
+        package = pkgs.rustPlatform.buildRustPackage {
+          pname = manifest.name;
+          version = manifest.version;
+          inherit src;
+          cargoLock.lockFile = src + "/Cargo.lock";
+        };
       in
       {
         config = lib.mkIf config.shell.highlighting.patina.enable {

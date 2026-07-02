@@ -52,7 +52,7 @@ You can define a module directly in your configuration and add it to the `import
         source = "share/zsh-autosuggestions/zsh-autosuggestions.zsh";
       };
 
-      initExtra = "echo 'Hello from my custom module!'";
+      initConfig = "echo 'Hello from my custom module!'";
     })
   ];
 }

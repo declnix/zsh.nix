@@ -45,6 +45,34 @@
         ];
       };
       completionFzfWithoutCompletionEval = builtins.tryEval completionFzfWithoutCompletion.drvPath;
+      hjemIntegration = lib.evalModules {
+        modules = [
+          config.flake.hjemModules.default
+          ({ lib, ... }: {
+            options.rum.programs.zsh = {
+              enable = lib.mkEnableOption "mock zsh";
+              initConfig = lib.mkOption {
+                type = lib.types.lines;
+                default = "";
+              };
+            };
+          })
+          {
+            integrations.zsh-nix = {
+              enable = true;
+              integrations.git.enable = true;
+              aliases.ll = "ls -l";
+            };
+
+            rum.programs.zsh.initConfig = lib.mkAfter ''
+              echo after
+            '';
+          }
+        ];
+        specialArgs = {
+          inherit pkgs;
+        };
+      };
       zdotdir = pkgs.runCommand "zdotdir" { } "mkdir -p $out && cp ${zshrc}/.zshrc $out/.zshrc";
       zsh = pkgs.symlinkJoin {
         name = "nix-zsh-smoke";
@@ -105,5 +133,26 @@
 
           touch $out
         '';
+
+      checks.hjem-integration = pkgs.runCommand "nix-zsh-hjem-integration" { } ''
+        initConfig=${pkgs.writeText "hjem-zsh-init" hjemIntegration.config.rum.programs.zsh.initConfig}
+
+        ${lib.optionalString (!hjemIntegration.config.rum.programs.zsh.enable) ''
+          echo "expected integrations.zsh-nix.enable to enable rum.programs.zsh by default"
+          exit 1
+        ''}
+
+        grep -q "^alias ll='ls -l'$" "$initConfig"
+        grep -q 'plugins/git/git.plugin.zsh' "$initConfig"
+        grep -q 'echo after' "$initConfig"
+
+        line() {
+          grep -n "$1" "$initConfig" | head -n1 | cut -d: -f1
+        }
+
+        test "$(line "^alias ll='ls -l'$")" -lt "$(line 'echo after')"
+
+        touch $out
+      '';
     };
 }

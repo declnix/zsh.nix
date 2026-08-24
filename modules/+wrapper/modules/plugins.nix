@@ -27,6 +27,11 @@ let
         default = [ ];
         description = "Plugin names that must load before this plugin.";
       };
+      before = lib.mkOption {
+        type = lib.types.listOf lib.types.str;
+        default = [ ];
+        description = "Plugin names that must load after this plugin.";
+      };
     };
   };
 

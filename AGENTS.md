@@ -2,22 +2,20 @@
 
 ## Git Commit Convention
 
-Use Conventional Commits for commit messages:
+Use `scope: short description` for commit messages:
 
 ```text
-type(scope): subject
+scope: short description
 ```
 
-- Prefer `feat`, `fix`, `docs`, `test`, `refactor`, and `chore`.
-- Use an optional scope when it clarifies the affected area.
 - Keep the subject lowercase, imperative, concise, and without a trailing period.
 - Good scopes for this repo include `wrapper`, `plugins`, `checks`, `treefmt`, `flake`, and `docs`.
 
 Examples:
 
 ```text
-feat(plugins): add zsh plugin module
-fix(wrapper): preserve plugin load order
+plugins: add zsh plugin module
+wrapper: preserve plugin load order
 docs: describe project structure
 ```
 

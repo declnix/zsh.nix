@@ -6,10 +6,9 @@
         name = "docker-compose";
       in
       {
-        options.zsh.integrations.${name}.enable = lib.mkOption {
+        options.integrations.${name}.enable = lib.mkOption {
           type = lib.types.bool;
           default = false;
-          internal = true;
           description = "Enable the OMZ ${name} plugin.";
         };
       })
@@ -19,10 +18,12 @@
         name = "docker-compose";
       in
       {
-        config = lib.mkIf config.zsh.integrations.${name}.enable {
+        config = lib.mkIf config.integrations.${name}.enable {
           zsh.optPlugins."omz-${name}" = {
             package = pkgs.oh-my-zsh;
             source = "share/oh-my-zsh/plugins/${name}/${name}.plugin.zsh";
+            after = [ "omz-docker" ];
+            before = [ "omz-npm" ];
           };
         };
       })

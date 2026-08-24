@@ -8,18 +8,34 @@
         inherit pkgs;
         modules = [
           {
-            zsh-vi-mode.enable = true;
-            zsh-autosuggestions.enable = true;
-            zsh-patina.enable = true;
-            fzf-tab.enable = true;
-            fzf-history-search.enable = true;
+            vi.enable = true;
+            autosuggestion.enable = true;
+            syntaxHighlighting.integrations.patina.enable = true;
 
-            omz = {
+            completion = {
+              enable = true;
+              integrations.fzf.enable = true;
+            };
+
+            history.integrations.fzf.enable = true;
+
+            integrations = {
               git.enable = true;
               docker.enable = true;
               npm.enable = true;
               mvn.enable = true;
             };
+
+            aliases = {
+              ll = "ls -l";
+              gs = "git status";
+            };
+
+            setopt = [
+              "AUTO_CD"
+              "EXTENDED_GLOB"
+            ];
+            unsetopt = [ "BEEP" ];
 
             initConfig = ''
               if [[ -n $SSH_CLIENT ]]; then

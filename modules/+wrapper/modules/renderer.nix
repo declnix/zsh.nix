@@ -12,7 +12,10 @@
 
         toDagEntry = name: p: {
           inherit name;
-          value = dag.entryAfter p.after (renderPlugin p);
+          value = dag.entry {
+            inherit (p) after before;
+            data = renderPlugin p;
+          };
         };
 
         renderPluginDag = plugins:

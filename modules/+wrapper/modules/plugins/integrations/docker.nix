@@ -6,7 +6,7 @@
         name = "docker";
       in
       {
-        options.omz.${name}.enable = lib.mkEnableOption "Docker integration";
+        options.integrations.${name}.enable = lib.mkEnableOption "Docker integration";
       })
 
     ({ config, lib, pkgs, ... }:
@@ -22,8 +22,8 @@
         '';
       in
       {
-        config = lib.mkIf config.omz.${name}.enable {
-          zsh.integrations.docker-compose.enable = lib.mkDefault true;
+        config = lib.mkIf config.integrations.${name}.enable {
+          integrations.docker-compose.enable = lib.mkDefault true;
 
           zsh.optPlugins."omz-${name}" = {
             package = plugin;
@@ -31,6 +31,8 @@
             init = ''
               fpath=("${plugin}/share/oh-my-zsh/plugins/${name}/completions" $fpath)
             '';
+            after = [ "omz-git" ];
+            before = [ "omz-docker-compose" ];
           };
         };
       })

@@ -2,14 +2,15 @@
 {
   zsh.modules = [
     ({ lib, ... }: {
-      options.zsh-vi-mode.enable = lib.mkEnableOption "vi-mode";
+      options.vi.enable = lib.mkEnableOption "vi-mode";
     })
 
     ({ config, lib, pkgs, ... }: {
-      config = lib.mkIf config.zsh-vi-mode.enable {
+      config = lib.mkIf config.vi.enable {
         zsh.startPlugins.vi-mode = {
           package = pkgs.zsh-vi-mode;
           source = "share/zsh-vi-mode/zsh-vi-mode.plugin.zsh";
+          before = [ "autosuggestions" ];
         };
       };
     })

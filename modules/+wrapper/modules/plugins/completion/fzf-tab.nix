@@ -2,12 +2,19 @@
 {
   zsh.modules = [
     ({ lib, ... }: {
-      options.fzf-tab.enable = lib.mkEnableOption "fzf-tab";
+      options.completion.integrations.fzf.enable = lib.mkEnableOption "fzf-tab";
     })
 
     ({ config, lib, pkgs, ... }: {
-      config = lib.mkIf config.fzf-tab.enable {
-        zsh.optPlugins.fzf-tab = {
+      config = {
+        assertions = lib.mkIf config.completion.integrations.fzf.enable [
+          {
+            assertion = config.completion.enable;
+            message = "completion.integrations.fzf.enable requires completion.enable.";
+          }
+        ];
+
+        zsh.optPlugins.fzf-tab = lib.mkIf config.completion.integrations.fzf.enable {
           package = pkgs.fetchFromGitHub {
             owner = "Aloxaf";
             repo = "fzf-tab";
@@ -16,6 +23,10 @@
           };
           source = "fzf-tab.plugin.zsh";
           init = "enable-fzf-tab";
+          before = [
+            "fzf-history-search"
+            "omz-git"
+          ];
         };
       };
     })
